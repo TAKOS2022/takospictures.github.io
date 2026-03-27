@@ -723,6 +723,151 @@
       border-radius: 50px;
     }
 
+    /* Thumbnail inside card */
+    .portfolio-thumb {
+      position: relative;
+      aspect-ratio: 4/5;
+      overflow: hidden;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .portfolio-thumb img,
+    .portfolio-thumb video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    /* ============================================================
+       LIGHTBOX
+    ============================================================ */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox.open { display: flex; }
+
+    .lightbox-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      cursor: pointer;
+    }
+
+    .lightbox-inner {
+      position: relative;
+      z-index: 1;
+      max-width: min(90vw, 1000px);
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .lightbox-media {
+      max-width: 100%;
+      max-height: 75vh;
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #111;
+    }
+    .lightbox-media img {
+      max-width: 100%;
+      max-height: 75vh;
+      object-fit: contain;
+      display: block;
+      border-radius: var(--radius);
+    }
+    .lightbox-media video {
+      max-width: 100%;
+      max-height: 75vh;
+      border-radius: var(--radius);
+      outline: none;
+    }
+
+    .lightbox-caption {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(255,255,255,0.85);
+    }
+    .lightbox-caption h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--light);
+    }
+    .lightbox-counter {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.35);
+      margin-left: 8px;
+    }
+
+    .lightbox-close,
+    .lightbox-prev,
+    .lightbox-next {
+      position: fixed;
+      z-index: 2;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff;
+      cursor: pointer;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--transition);
+      backdrop-filter: blur(8px);
+    }
+    .lightbox-close:hover,
+    .lightbox-prev:hover,
+    .lightbox-next:hover { background: rgba(255,255,255,0.22); }
+
+    .lightbox-close {
+      top: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      font-size: 1.2rem;
+    }
+    .lightbox-prev {
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      font-size: 1.5rem;
+    }
+    .lightbox-next {
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      font-size: 1.5rem;
+    }
+
+    /* Video play indicator on overlay */
+    .overlay-icon {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .lightbox-prev { left: 8px; }
+      .lightbox-next { right: 8px; }
+    }
+
     /* ============================================================
        SOCIAL
     ============================================================ */
@@ -1029,11 +1174,7 @@
             par cette ligne (place le fichier dans assets/photos/) :
             <img src="assets/photos/ta-photo.jpg" alt="Justin Takodjou" />
           -->
-          <div class="hero-photo-placeholder">
-            <span>📸</span>
-            Ajoute ta photo ici
-            <small>assets/photos/ta-photo.jpg</small>
-          </div>
+          <img src="assets/photos/profil.jpg" alt="Justin Takodjou" />
         </div>
       </div>
 
@@ -1137,10 +1278,27 @@
 
     <div class="portfolio-grid" id="portfolioGrid">
 
-      <div class="portfolio-card fade-in" data-category="concerts">
-        <div class="portfolio-placeholder cat-concerts">
-          <div class="portfolio-icon">🎤</div>
-          <div class="portfolio-overlay"><span>Voir le projet</span></div>
+      <!--
+        COMMENT REMPLIR UNE CARTE :
+        1. Upload ta photo/vidéo sur Cloudinary
+        2. Remplace [URL_THUMB] par l'URL Cloudinary avec transformation :
+           Photo  → https://res.cloudinary.com/TON_ID/image/upload/w_600,c_fill,g_auto/nom.jpg
+           Vidéo  → thumbnail auto : changer /video/upload/ par /video/upload/so_2,w_600/  + .jpg
+        3. Remplace [URL_MEDIA] par l'URL complète (image ou vidéo .mp4)
+        4. Mets data-type="image" ou data-type="video"
+      -->
+
+      <div class="portfolio-card fade-in"
+           data-category="concerts"
+           data-type="image"
+           data-title="Artiste Hiro — Shooting photo &amp; vidéo"
+           data-media="assets/photos/hiro-concert.jpg">
+        <div class="portfolio-thumb">
+          <img src="assets/photos/hiro-concert.jpg" alt="Artiste Hiro" loading="lazy" />
+          <div class="portfolio-placeholder cat-concerts" style="display:none;">
+            <div class="portfolio-icon">🎤</div>
+          </div>
+          <div class="portfolio-overlay"><span class="overlay-icon">&#128247; Voir</span></div>
         </div>
         <div class="portfolio-info">
           <h4>Artiste Hiro</h4>
@@ -1148,10 +1306,17 @@
         </div>
       </div>
 
-      <div class="portfolio-card fade-in delay-1" data-category="concerts">
-        <div class="portfolio-placeholder cat-concerts">
-          <div class="portfolio-icon">🎵</div>
-          <div class="portfolio-overlay"><span>Voir le projet</span></div>
+      <div class="portfolio-card fade-in delay-1"
+           data-category="concerts"
+           data-type="video"
+           data-title="FJAQ — Couverture événement complète"
+           data-media="assets/photos/fjaq-evenement.jpg">
+        <div class="portfolio-thumb">
+          <img src="assets/photos/fjaq-evenement.jpg" alt="FJAQ" loading="lazy" />
+          <div class="portfolio-placeholder cat-concerts" style="display:none;">
+            <div class="portfolio-icon">🎵</div>
+          </div>
+          <div class="portfolio-overlay"><span class="overlay-icon">&#9654; Voir</span></div>
         </div>
         <div class="portfolio-info">
           <h4>FJAQ — Couverture événement</h4>
@@ -1159,10 +1324,17 @@
         </div>
       </div>
 
-      <div class="portfolio-card fade-in delay-2" data-category="corporate">
-        <div class="portfolio-placeholder cat-corporate">
-          <div class="portfolio-icon">💼</div>
-          <div class="portfolio-overlay"><span>Voir le projet</span></div>
+      <div class="portfolio-card fade-in delay-2"
+           data-category="corporate"
+           data-type="image"
+           data-title="CEO Mae — Shooting corporate"
+           data-media="assets/photos/ceo-mae.jpg">
+        <div class="portfolio-thumb">
+          <img src="assets/photos/ceo-mae.jpg" alt="CEO Mae" loading="lazy" />
+          <div class="portfolio-placeholder cat-corporate" style="display:none;">
+            <div class="portfolio-icon">💼</div>
+          </div>
+          <div class="portfolio-overlay"><span class="overlay-icon">&#128247; Voir</span></div>
         </div>
         <div class="portfolio-info">
           <h4>CEO Mae — Shooting corporate</h4>
@@ -1170,10 +1342,17 @@
         </div>
       </div>
 
-      <div class="portfolio-card fade-in delay-3" data-category="corporate">
-        <div class="portfolio-placeholder cat-corporate">
-          <div class="portfolio-icon">🏠</div>
-          <div class="portfolio-overlay"><span>Voir le projet</span></div>
+      <div class="portfolio-card fade-in delay-3"
+           data-category="corporate"
+           data-type="video"
+           data-title="Immobilier — Shooting + vidéo"
+           data-media="assets/photos/immobilier.jpg">
+        <div class="portfolio-thumb">
+          <img src="assets/photos/immobilier.jpg" alt="Immobilier" loading="lazy" />
+          <div class="portfolio-placeholder cat-corporate" style="display:none;">
+            <div class="portfolio-icon">🏠</div>
+          </div>
+          <div class="portfolio-overlay"><span class="overlay-icon">&#9654; Voir</span></div>
         </div>
         <div class="portfolio-info">
           <h4>Immobilier — Shooting + vidéo</h4>
@@ -1181,10 +1360,17 @@
         </div>
       </div>
 
-      <div class="portfolio-card fade-in" data-category="occasions">
-        <div class="portfolio-placeholder cat-occasions">
-          <div class="portfolio-icon">🎓</div>
-          <div class="portfolio-overlay"><span>Voir le projet</span></div>
+      <div class="portfolio-card fade-in"
+           data-category="occasions"
+           data-type="image"
+           data-title="Graduation — Shooting + vidéo réception"
+           data-media="assets/photos/graduation.jpg">
+        <div class="portfolio-thumb">
+          <img src="assets/photos/graduation.jpg" alt="Graduation" loading="lazy" />
+          <div class="portfolio-placeholder cat-occasions" style="display:none;">
+            <div class="portfolio-icon">🎓</div>
+          </div>
+          <div class="portfolio-overlay"><span class="overlay-icon">&#128247; Voir</span></div>
         </div>
         <div class="portfolio-info">
           <h4>Graduation — Shooting + réception</h4>
@@ -1192,10 +1378,17 @@
         </div>
       </div>
 
-      <div class="portfolio-card fade-in delay-1" data-category="occasions">
-        <div class="portfolio-placeholder cat-occasions">
-          <div class="portfolio-icon">🎂</div>
-          <div class="portfolio-overlay"><span>Voir le projet</span></div>
+      <div class="portfolio-card fade-in delay-1"
+           data-category="occasions"
+           data-type="image"
+           data-title="Anniversaire Bonny — Shooting"
+           data-media="assets/photos/anniversaire-bonny.jpg">
+        <div class="portfolio-thumb">
+          <img src="assets/photos/anniversaire-bonny.jpg" alt="Anniversaire Bonny" loading="lazy" />
+          <div class="portfolio-placeholder cat-occasions" style="display:none;">
+            <div class="portfolio-icon">🎂</div>
+          </div>
+          <div class="portfolio-overlay"><span class="overlay-icon">&#128247; Voir</span></div>
         </div>
         <div class="portfolio-info">
           <h4>Anniversaire Bonny</h4>
@@ -1203,10 +1396,17 @@
         </div>
       </div>
 
-      <div class="portfolio-card fade-in delay-2" data-category="occasions">
-        <div class="portfolio-placeholder cat-occasions">
-          <div class="portfolio-icon">❤️</div>
-          <div class="portfolio-overlay"><span>Voir le projet</span></div>
+      <div class="portfolio-card fade-in delay-2"
+           data-category="occasions"
+           data-type="image"
+           data-title="Saint-Valentin — Shooting thématique"
+           data-media="assets/photos/saint-valentin.jpg">
+        <div class="portfolio-thumb">
+          <img src="assets/photos/saint-valentin.jpg" alt="Saint-Valentin" loading="lazy" />
+          <div class="portfolio-placeholder cat-occasions" style="display:none;">
+            <div class="portfolio-icon">❤️</div>
+          </div>
+          <div class="portfolio-overlay"><span class="overlay-icon">&#128247; Voir</span></div>
         </div>
         <div class="portfolio-info">
           <h4>Saint-Valentin — Shooting thématique</h4>
@@ -1214,10 +1414,17 @@
         </div>
       </div>
 
-      <div class="portfolio-card fade-in delay-3" data-category="studio">
-        <div class="portfolio-placeholder cat-studio">
-          <div class="portfolio-icon">🎞️</div>
-          <div class="portfolio-overlay"><span>Voir le projet</span></div>
+      <div class="portfolio-card fade-in delay-3"
+           data-category="studio"
+           data-type="image"
+           data-title="Studio — Portraits professionnels"
+           data-media="assets/photos/studio-portraits.jpg">
+        <div class="portfolio-thumb">
+          <img src="assets/photos/studio-portraits.jpg" alt="Studio" loading="lazy" />
+          <div class="portfolio-placeholder cat-studio" style="display:none;">
+            <div class="portfolio-icon">🎞️</div>
+          </div>
+          <div class="portfolio-overlay"><span class="overlay-icon">&#128247; Voir</span></div>
         </div>
         <div class="portfolio-info">
           <h4>Studio — Portraits professionnels</h4>
@@ -1225,10 +1432,17 @@
         </div>
       </div>
 
-      <div class="portfolio-card fade-in" data-category="formation">
-        <div class="portfolio-placeholder cat-formation">
-          <div class="portfolio-icon">🎓</div>
-          <div class="portfolio-overlay"><span>Voir le projet</span></div>
+      <div class="portfolio-card fade-in"
+           data-category="formation"
+           data-type="image"
+           data-title="Atelier — Création de contenu"
+           data-media="assets/photos/atelier-creation-contenu.jpg">
+        <div class="portfolio-thumb">
+          <img src="assets/photos/atelier-creation-contenu.jpg" alt="Atelier création de contenu" loading="lazy" />
+          <div class="portfolio-placeholder cat-formation" style="display:none;">
+            <div class="portfolio-icon">🎓</div>
+          </div>
+          <div class="portfolio-overlay"><span class="overlay-icon">&#128247; Voir</span></div>
         </div>
         <div class="portfolio-info">
           <h4>Atelier — Création de contenu</h4>
@@ -1332,6 +1546,24 @@
       </div>
     </div>
   </footer>
+
+  <!-- ============================================================
+       LIGHTBOX MODAL
+  ============================================================ -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Visualisation média">
+    <div class="lightbox-backdrop" id="lightboxBackdrop"></div>
+    <button class="lightbox-close" id="lightboxClose" aria-label="Fermer">&#x2715;</button>
+    <button class="lightbox-prev" id="lightboxPrev" aria-label="Précédent">&#8249;</button>
+    <button class="lightbox-next" id="lightboxNext" aria-label="Suivant">&#8250;</button>
+    <div class="lightbox-inner">
+      <div class="lightbox-media" id="lightboxMedia"></div>
+      <div class="lightbox-caption">
+        <h3 id="lightboxTitle"></h3>
+        <span id="lightboxBadge" class="portfolio-badge"></span>
+        <span id="lightboxCounter" class="lightbox-counter"></span>
+      </div>
+    </div>
+  </div>
 
   <!-- Floating WhatsApp Button -->
   <a class="fab-whatsapp" href="https://wa.me/[TON_NUMERO]" target="_blank" rel="noopener" aria-label="Contacter sur WhatsApp">
@@ -1452,6 +1684,137 @@
           }
         });
       });
+    });
+
+    // ============================================================
+    // LIGHTBOX
+    // ============================================================
+    const lightbox       = document.getElementById('lightbox');
+    const lightboxMedia  = document.getElementById('lightboxMedia');
+    const lightboxTitle  = document.getElementById('lightboxTitle');
+    const lightboxBadge  = document.getElementById('lightboxBadge');
+    const lightboxCounter= document.getElementById('lightboxCounter');
+
+    let currentIndex = 0;
+    let visibleCards = [];
+
+    function getVisibleCards() {
+      return [...document.querySelectorAll('.portfolio-card:not(.hidden)')];
+    }
+
+    function openLightbox(cards, index) {
+      visibleCards = cards;
+      currentIndex = index;
+      renderLightbox();
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+      // Stop any playing video
+      const vid = lightboxMedia.querySelector('video');
+      if (vid) vid.pause();
+      lightboxMedia.innerHTML = '';
+    }
+
+    function renderLightbox() {
+      const card   = visibleCards[currentIndex];
+      const type   = card.dataset.type  || 'image';
+      const media  = card.dataset.media || '';
+      const title  = card.dataset.title || card.querySelector('h4').textContent;
+      const badge  = card.querySelector('.portfolio-badge').textContent;
+      const total  = visibleCards.length;
+
+      // Stop previous video
+      const prevVid = lightboxMedia.querySelector('video');
+      if (prevVid) prevVid.pause();
+      lightboxMedia.innerHTML = '';
+
+      if (!media || media.startsWith('[')) {
+        // Placeholder : pas encore de média
+        lightboxMedia.innerHTML = `
+          <div style="width:320px;height:400px;display:flex;flex-direction:column;
+            align-items:center;justify-content:center;gap:12px;
+            color:rgba(255,255,255,0.3);font-family:'Outfit',sans-serif;text-align:center;padding:24px;">
+            <span style="font-size:3rem;opacity:.4;">📷</span>
+            Média non encore ajouté<br/>
+            <small style="font-size:.75rem;">Ajoute l'URL Cloudinary dans data-media</small>
+          </div>`;
+      } else if (type === 'video') {
+        const vid = document.createElement('video');
+        vid.src = media;
+        vid.controls = true;
+        vid.autoplay = true;
+        vid.playsInline = true;
+        vid.style.maxWidth = '100%';
+        vid.style.maxHeight = '75vh';
+        vid.style.borderRadius = '12px';
+        lightboxMedia.appendChild(vid);
+      } else {
+        const img = document.createElement('img');
+        img.src = media;
+        img.alt = title;
+        img.style.maxWidth = '100%';
+        img.style.maxHeight = '75vh';
+        img.style.objectFit = 'contain';
+        img.style.borderRadius = '12px';
+        lightboxMedia.appendChild(img);
+      }
+
+      lightboxTitle.textContent   = title;
+      lightboxBadge.textContent   = badge;
+      lightboxCounter.textContent = `${currentIndex + 1} / ${total}`;
+
+      // Show/hide nav buttons
+      document.getElementById('lightboxPrev').style.display = total > 1 ? 'flex' : 'none';
+      document.getElementById('lightboxNext').style.display = total > 1 ? 'flex' : 'none';
+    }
+
+    function showPrev() {
+      const prevVid = lightboxMedia.querySelector('video');
+      if (prevVid) prevVid.pause();
+      currentIndex = (currentIndex - 1 + visibleCards.length) % visibleCards.length;
+      renderLightbox();
+    }
+
+    function showNext() {
+      const prevVid = lightboxMedia.querySelector('video');
+      if (prevVid) prevVid.pause();
+      currentIndex = (currentIndex + 1) % visibleCards.length;
+      renderLightbox();
+    }
+
+    // Open on card click
+    document.getElementById('portfolioGrid').addEventListener('click', (e) => {
+      const card = e.target.closest('.portfolio-card');
+      if (!card || card.classList.contains('hidden')) return;
+      const cards = getVisibleCards();
+      const index = cards.indexOf(card);
+      if (index !== -1) openLightbox(cards, index);
+    });
+
+    document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+    document.getElementById('lightboxBackdrop').addEventListener('click', closeLightbox);
+    document.getElementById('lightboxPrev').addEventListener('click', showPrev);
+    document.getElementById('lightboxNext').addEventListener('click', showNext);
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape')      closeLightbox();
+      if (e.key === 'ArrowLeft')   showPrev();
+      if (e.key === 'ArrowRight')  showNext();
+    });
+
+    // Touch/swipe on mobile
+    let touchStartX = 0;
+    lightbox.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+    lightbox.addEventListener('touchend', (e) => {
+      if (!lightbox.classList.contains('open')) return;
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) diff > 0 ? showNext() : showPrev();
     });
 
     // Smooth scroll for anchor links
