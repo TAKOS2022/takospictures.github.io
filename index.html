@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Justin Takodjou — Photographe · Vidéaste · Consultant IA</title>
+  <title>Justin Takodjou | Photographe · Vidéaste · Consultant IA</title>
   <meta name="description" content="Photographe, vidéaste et consultant IA basé à Québec & Montréal. Contenu visuel premium pour cafés, restaurants, PME, événements et particuliers." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1145,30 +1145,50 @@
       .navbar-cta .btn { display: none; }
       .hamburger { display: flex; }
 
-      .hero { padding: 100px 24px 64px; }
-      .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+      .hero { padding: 88px 16px 64px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 36px; }
       .hero-photo-wrap { order: -1; }
-      .hero-photo-frame { width: 280px; height: 340px; }
+      .hero-photo-frame { width: 260px; height: 320px; }
       .hero-title { font-size: clamp(2.2rem, 10vw, 3.5rem); }
+      .hero-desc { font-size: 1rem; }
       .hero-deco { display: none; }
 
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .stat-card { padding: 36px 24px; }
+      .stat-card { padding: 32px 20px; }
 
       .services-grid { grid-template-columns: 1fr; }
-      .service-card { padding: 32px 28px; }
+      .service-card { padding: 28px 24px; }
 
       .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+
+      .social-buttons { gap: 10px; }
+      .social-btn { padding: 12px 18px; font-size: 0.85rem; }
 
       .footer-inner { flex-direction: column; align-items: flex-start; }
       .footer-links { flex-wrap: wrap; }
     }
 
     @media (max-width: 480px) {
+      .container { padding: 0 16px; }
       .portfolio-grid { grid-template-columns: 1fr; }
       .hero-ctas { flex-direction: column; }
-      .hero-ctas .btn { justify-content: center; }
-      .contact-actions { flex-direction: column; align-items: center; }
+      .hero-ctas .btn { justify-content: center; width: 100%; }
+      .contact-actions { flex-direction: column; align-items: stretch; width: 100%; max-width: 320px; margin: 0 auto; }
+      .contact-actions .btn { justify-content: center; }
+      .hero-badges { gap: 8px; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .social-buttons { flex-direction: column; align-items: stretch; }
+      .social-btn { justify-content: center; }
+    }
+
+    @media (max-width: 380px) {
+      .hero { padding: 80px 12px 48px; }
+      .hero-photo-frame { width: 220px; height: 280px; }
+      .hero-title { font-size: clamp(2rem, 12vw, 2.8rem); }
+      .role-rotator { min-width: 180px; }
+      .stat-card { padding: 24px 16px; }
+      .stat-number { font-size: clamp(1.8rem, 6vw, 2.5rem); }
+      .section-title { font-size: clamp(1.6rem, 7vw, 2.5rem); }
     }
   </style>
 </head>
@@ -1179,7 +1199,7 @@
   ============================================================ -->
   <nav class="navbar" id="navbar">
     <div class="navbar-inner">
-      <a href="#" class="navbar-logo">Justin <span>Takodjou</span></a>
+      <a href="#" class="navbar-logo">Photographe & <span>Vidéaste</span></a>
 
       <ul class="navbar-links">
         <li><a href="#services">Services</a></li>
@@ -1280,14 +1300,14 @@
       <div class="stat-card fade-in">
         <div class="stat-icon">🌟</div>
         <div class="stat-number">
-          <span class="counter" data-target="70000" data-suffix="+">0</span>
+          <span class="counter" data-target="75000" data-suffix="+">0</span>
         </div>
         <div class="stat-label">Abonnés sur les réseaux sociaux</div>
       </div>
       <div class="stat-card fade-in delay-1">
         <div class="stat-icon">👁️</div>
         <div class="stat-number">
-          <span class="counter" data-target="10000000" data-suffix="+">0</span>
+          <span style="color:var(--gold)">+10</span> Millions
         </div>
         <div class="stat-label">Vues générées sur les plateformes</div>
       </div>
@@ -1566,7 +1586,7 @@
     <div class="social-inner">
       <div class="fade-in">
         <p class="section-label" style="text-align:center;">Mes plateformes</p>
-        <h2 class="section-title" style="text-align:center;">+70 000 abonnés</h2>
+        <h2 class="section-title" style="text-align:center;">+75 000 abonnés</h2>
         <p class="section-subtitle" style="margin:0 auto;text-align:center;">Suis mon contenu et découvre mes coulisses créatives au quotidien.</p>
       </div>
 
@@ -1643,7 +1663,7 @@
       </div>
 
       <div class="footer-copy">
-        &copy; <span id="year"></span> Justin Takodjou — Tous droits réservés · Québec &amp; Montréal, Canada
+        &copy; <span id="year"></span> Justin Takodjou · Tous droits réservés · Québec &amp; Montréal, Canada
       </div>
     </div>
   </footer>
